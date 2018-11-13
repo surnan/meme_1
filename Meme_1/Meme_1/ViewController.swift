@@ -58,7 +58,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
+        subscribeToKeyboardNotification()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
     }
     
     override func viewDidLoad() {
@@ -72,6 +77,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         [topTextField, bottomTextField].forEach{$0?.delegate = self}
     }
 
+    //MARK:- Keyboard
+
+    @objc func keyboardWillShow(_ notification: Notification) {
+//        view.frame.origin.y = -getKeyBoardHeight(notification)  // y=0 top of screen. We shift it upwards
+    }
+    
+    private func subscribeToKeyboardNotification(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardDidShowNotification, object: nil)
+    }
+    
+    
+    func getKeyboardHeight(_ notification: Notification) -> CGFloat {
+        let userInfo = notification.userInfo
+        let keyboardSize = userInfo!
+        
+        return 11.1
+    }
+    
+    
     
     //MARK:- UIToolbar Actions
     @IBAction func pickAnImageFromAlbum(_ sender: Any) {
