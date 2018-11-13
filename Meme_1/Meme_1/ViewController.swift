@@ -11,9 +11,11 @@ import UIKit
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     
-    //MARK:- UITextField
+    
+    var image: UIImage!     //set via UIImagePickerController()
     @IBOutlet weak var imagePickerView: UIImageView!
     
+    //MARK:- UITextField Outlets & Code
     @IBOutlet weak var topTextField: UITextField! {
         didSet{
             //topTextField = setupTextField() // ERROR
@@ -29,7 +31,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
-    
     @objc func myTextFieldTextChanged (textField: UITextField) {
         textField.text =  textField.text?.uppercased()
     }
@@ -38,8 +39,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.view.endEditing(true)
         return true
     }
-    
-    
     
     func setupTextField(textField: UITextField) -> UITextField{
         let tempTextField = textField
@@ -55,22 +54,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return tempTextField
     }
     
-    
-    func setupTextField() -> UITextField {
-        let tempTextField = UITextField()
-        tempTextField.clearsOnBeginEditing = true
-        let memeTextAttributes:[NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.strokeColor: UIColor.black,
-            NSAttributedString.Key.foregroundColor: UIColor.white,
-            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSAttributedString.Key.strokeWidth: -4.6
-        ]
-        tempTextField.defaultTextAttributes = memeTextAttributes
-        tempTextField.textAlignment = .center
-        return tempTextField
-    }
-    
-    var image: UIImage!     //set via UIImagePickerController()
+    //MARK:- Default Swift Functions
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
