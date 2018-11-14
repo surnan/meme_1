@@ -13,34 +13,15 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var finalImage = UIImage()
     
     
-    var tempImageView: UIImageView = {
-       let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    
-    var tempImage: UIImage = {
-       let image = UIImage()
-        
-        
-        return image
-    }()
-    
-    
-    
-    
     @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var toolBar: UIToolbar!
     
     func showToolbars(makeVisible: Bool){
         if !makeVisible {
-            toolBar.isHidden = true
+            bottomToolbar.isHidden = true
             topToolbar.isHidden = true
         } else {
             topToolbar.isHidden = false
-            toolBar.isHidden = false
+            bottomToolbar.isHidden = false
         }
     }
     
@@ -53,13 +34,25 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return toolbar
     }()
     
+    var bottomToolbar: UIToolbar = {
+        var toolbar = UIToolbar()
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        toolbar.barTintColor = UIColor.red
+        toolbar.isTranslucent = false
+        return toolbar
+    }()
+    
     func setupUI_and_Contraints(){
         setupTopToolBar()
-        [topToolbar].forEach{view.addSubview($0)}
+        setupBottomToolBar()
+        [topToolbar, bottomToolbar].forEach{view.addSubview($0)}
         NSLayoutConstraint.activate([
         topToolbar.topAnchor.constraint(equalTo: view.topAnchor),
         topToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
         topToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        bottomToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60),
+        bottomToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        bottomToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
     
@@ -75,6 +68,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         topToolbar.setItems([barButtonOne, flexibleSpace ,barButtonTwo], animated: false)
     }
+
+    func setupBottomToolBar(){
+        let barButtonOne = UIBarButtonItem(title: "PICK", style: .done, target: self, action: #selector(handleAlbumBarButton))
+        let barButtonTwo = UIBarButtonItem(title: "CAMERA", style: .plain, target: self, action: #selector(handleCameraBarButton))
+        
+        let flexibleSpace = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil,
+            action: nil
+        )
+        
+        bottomToolbar.setItems([flexibleSpace, barButtonOne, flexibleSpace ,barButtonTwo,flexibleSpace], animated: false)
+    }
+    
+    @objc func handleAlbumBarButton() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @objc func handleCameraBarButton(_ sender: Any) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        present(imagePicker, animated: true, completion: nil)    }
+    
     
     @objc private func helloWorld(){
         print("hello world")
@@ -191,22 +211,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return 0.0
     }
 
-    
-    
-    
-    //MARK:- UIToolbar Actions & Meme Generator
-    @IBAction func pickAnImageFromAlbum(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    @IBAction func pickAnImageFromCamera(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        present(imagePicker, animated: true, completion: nil)    }
     
     //MARK:- ImagePickerController Functions
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

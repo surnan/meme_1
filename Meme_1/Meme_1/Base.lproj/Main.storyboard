@@ -21,24 +21,6 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jbV-fV-YTb">
                                 <rect key="frame" x="0.0" y="20" width="375" height="603"/>
                             </imageView>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ABy-FE-qPp">
-                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
-                                <items>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="luF-Ti-FfF"/>
-                                    <barButtonItem title="Pick" id="3tZ-OI-Rem">
-                                        <connections>
-                                            <action selector="pickAnImageFromAlbum:" destination="BYZ-38-t0r" id="UKJ-I1-PkB"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="nYL-3c-JKh"/>
-                                    <barButtonItem title="Camera" id="Uhv-6x-r8Q">
-                                        <connections>
-                                            <action selector="pickAnImageFromCamera:" destination="BYZ-38-t0r" id="Nrx-wO-UJ9"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="iZl-G7-VHf"/>
-                                </items>
-                            </toolbar>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WD0-Ic-Wkh">
                                 <rect key="frame" x="87.5" y="548" width="200" height="30"/>
                                 <constraints>
@@ -61,23 +43,19 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="jbV-fV-YTb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="FZR-kN-7Oh"/>
-                            <constraint firstItem="ABy-FE-qPp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="JSy-Hg-g16"/>
-                            <constraint firstItem="ABy-FE-qPp" firstAttribute="top" secondItem="jbV-fV-YTb" secondAttribute="bottom" id="MMn-6x-GGn"/>
-                            <constraint firstItem="ABy-FE-qPp" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="NcT-44-rY2"/>
                             <constraint firstItem="7mv-u1-sYu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="68" id="WkP-5A-LPc"/>
-                            <constraint firstItem="ABy-FE-qPp" firstAttribute="top" secondItem="WD0-Ic-Wkh" secondAttribute="bottom" constant="45" id="ZaX-TR-ICs"/>
                             <constraint firstItem="jbV-fV-YTb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="cB6-uf-KMf"/>
                             <constraint firstItem="jbV-fV-YTb" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="njP-6s-euX"/>
                             <constraint firstItem="7mv-u1-sYu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pBp-PM-3Ib"/>
                             <constraint firstItem="WD0-Ic-Wkh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pCY-u2-dHU"/>
-                            <constraint firstItem="ABy-FE-qPp" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="z27-1k-865"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="jbV-fV-YTb" secondAttribute="bottom" constant="44" id="txp-pj-MbB"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="WD0-Ic-Wkh" secondAttribute="bottom" constant="89" id="z2j-wi-F29"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="backgroundImageView" destination="jbV-fV-YTb" id="OKp-Ac-LuM"/>
                         <outlet property="bottomTextField" destination="WD0-Ic-Wkh" id="06g-Wi-24Z"/>
-                        <outlet property="toolBar" destination="ABy-FE-qPp" id="aPc-bV-vHl"/>
                         <outlet property="topTextField" destination="7mv-u1-sYu" id="OkE-pQ-IxG"/>
                     </connections>
                 </viewController>
