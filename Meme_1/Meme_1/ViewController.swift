@@ -12,9 +12,82 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     var finalImage = UIImage()
     
+    
+    var tempImageView: UIImageView = {
+       let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+    
+    var tempImage: UIImage = {
+       let image = UIImage()
+        
+        
+        return image
+    }()
+    
+    
+    
+    
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var toolBar: UIToolbar!
-    @IBOutlet weak var toolBarTop: UIToolbar!
+    
+    func showToolbars(makeVisible: Bool){
+        if !makeVisible {
+            toolBar.isHidden = true
+            topToolbar.isHidden = true
+        } else {
+            topToolbar.isHidden = false
+            toolBar.isHidden = false
+        }
+    }
+    
+    //MARK:- Toolbars programiticallly
+    var topToolbar: UIToolbar = {
+       var toolbar = UIToolbar()
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        toolbar.barTintColor = UIColor.red
+        toolbar.isTranslucent = false
+        return toolbar
+    }()
+    
+    func setupUI_and_Contraints(){
+        setupTopToolBar()
+        [topToolbar].forEach{view.addSubview($0)}
+        NSLayoutConstraint.activate([
+        topToolbar.topAnchor.constraint(equalTo: view.topAnchor),
+        topToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        topToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+    }
+    
+    func setupTopToolBar(){
+        let barButtonOne = UIBarButtonItem(title: "SHARE", style: .done, target: self, action: #selector(handleShareBarButton))
+        let barButtonTwo = UIBarButtonItem(title: "CANCEL", style: .plain, target: self, action: #selector(helloWorld))
+        
+        let flexibleSpace = UIBarButtonItem(
+            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
+            target: nil,
+            action: nil
+        )
+        
+        topToolbar.setItems([barButtonOne, flexibleSpace ,barButtonTwo], animated: false)
+    }
+    
+    @objc private func helloWorld(){
+        print("hello world")
+    }
+    
+    @objc private func handleShareBarButton() {
+        saveMeme()
+        let items = [finalImage]
+        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        present(ac, animated: true)
+        print("--Share Button pressed--")
+    }
+    
     
     //MARK:- UITextField Outlets & Code
     @IBOutlet weak var topTextField: UITextField! {
@@ -60,7 +133,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     //MARK:- Default Swift Functions
-    
     override var prefersStatusBarHidden: Bool {
         return true
     }
@@ -77,7 +149,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.yellow
+        view.backgroundColor = UIColor.black
+
+        setupUI_and_Contraints()
+        
         
         [topTextField, bottomTextField].forEach{
             $0.addTarget(self, action: #selector(myTextFieldTextChanged), for: UIControl.Event.editingChanged)
@@ -146,24 +221,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func saveMeme() {
-        showToolbars(visible: false)
+        showToolbars(makeVisible: false)
         var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: backgroundImageView)
         currentMeme.finalImage = generateMemedImage()
         finalImage = currentMeme.finalImage
-        showToolbars(visible: true)
+        showToolbars(makeVisible: true)
     }
-    
-
-    func showToolbars(visible: Bool){
-        if !visible {
-            toolBar.isHidden = true
-            toolBarTop.isHidden = true
-        } else {
-            toolBar.isHidden = false
-            toolBarTop.isHidden = false
-        }
-    }
-    
     
     func generateMemedImage() -> UIImage {
         // Render view to an image
@@ -172,24 +235,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return memedImage
-    }
-    
-    
-    
-    
-    
-    @IBAction func handleShareMemeBarButton(_ sender: Any) {
-        
-        saveMeme()
-        
-//        let items = ["This app is my favorite"]
-//        let items = [URL(string: "https://www.apple.com")!]
-        let items = [finalImage]
-
-        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        present(ac, animated: true)
-        
-        print("Share Button pressed")
     }
 }
 
