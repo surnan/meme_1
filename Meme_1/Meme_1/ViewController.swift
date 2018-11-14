@@ -145,54 +145,52 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         dismiss(animated: true, completion: nil)
     }
     
-    
-    @IBAction func saveMeme(_ sender: Any) {
-        
-        toolBar.isHidden = true
-        toolBarTop.isHidden = true
+    func saveMeme() {
+        showToolbars(visible: false)
         var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: backgroundImageView)
         currentMeme.finalImage = generateMemedImage()
         finalImage = currentMeme.finalImage
-       print("saving meme")
-        toolBar.isHidden = false
-        toolBarTop.isHidden = false
+        showToolbars(visible: true)
     }
     
 
+    func showToolbars(visible: Bool){
+        if !visible {
+            toolBar.isHidden = true
+            toolBarTop.isHidden = true
+        } else {
+            toolBar.isHidden = false
+            toolBarTop.isHidden = false
+        }
+    }
+    
+    
     func generateMemedImage() -> UIImage {
-        
-        // TODO: Hide toolbar and navbar
-        
         // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
-        // TODO: Show toolbar and navbar
-        
         return memedImage
     }
     
     
     
+    
+    
     @IBAction func handleShareMemeBarButton(_ sender: Any) {
+        
+        saveMeme()
         
 //        let items = ["This app is my favorite"]
 //        let items = [URL(string: "https://www.apple.com")!]
         let items = [finalImage]
-        
+
         let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
         present(ac, animated: true)
         
         print("Share Button pressed")
     }
-    
-    
-    
-    
-
-    
 }
 
 

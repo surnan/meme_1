@@ -45,11 +45,6 @@
                                             <action selector="pickAnImageFromCamera:" destination="BYZ-38-t0r" id="Nrx-wO-UJ9"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem title="Save" id="2Ho-wl-2Uw">
-                                        <connections>
-                                            <action selector="saveMeme:" destination="BYZ-38-t0r" id="4w2-mJ-2ZK"/>
-                                        </connections>
-                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WD0-Ic-Wkh">
