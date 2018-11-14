@@ -36,6 +36,8 @@
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>&quot;This app needs access to your Photo Library&quot;</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>&quot;We need to import Photos&quot;</string>
 	<key>NSCameraUsageDescription</key>
 	<string>&quot;This app needs access to your Camera&quot;</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>

@@ -10,9 +10,11 @@ import UIKit
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
+    var finalImage = UIImage()
     
-    @IBOutlet weak var imagePickerView: UIImageView!
+    @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var toolBar: UIToolbar!
+    @IBOutlet weak var toolBarTop: UIToolbar!
     
     //MARK:- UITextField Outlets & Code
     @IBOutlet weak var topTextField: UITextField! {
@@ -137,11 +139,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        print("PICKED AN IMAGE")
         if let tempImage = info[.originalImage] as? UIImage {
-            
-            imagePickerView.image = tempImage
-//            self.image = tempImage
+            backgroundImageView.image = tempImage
         }
         dismiss(animated: true, completion: nil)
     }
@@ -150,10 +149,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBAction func saveMeme(_ sender: Any) {
         
         toolBar.isHidden = true
-        var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: imagePickerView)
+        toolBarTop.isHidden = true
+        var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: backgroundImageView)
         currentMeme.finalImage = generateMemedImage()
+        finalImage = currentMeme.finalImage
        print("saving meme")
         toolBar.isHidden = false
+        toolBarTop.isHidden = false
     }
     
 
@@ -171,6 +173,24 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         return memedImage
     }
+    
+    
+    
+    @IBAction func handleShareMemeBarButton(_ sender: Any) {
+        
+//        let items = ["This app is my favorite"]
+//        let items = [URL(string: "https://www.apple.com")!]
+        let items = [finalImage]
+        
+        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        present(ac, animated: true)
+        
+        print("Share Button pressed")
+    }
+    
+    
+    
+    
 
     
 }
