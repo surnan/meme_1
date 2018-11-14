@@ -18,9 +18,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jbV-fV-YTb">
-                                <rect key="frame" x="67" y="158" width="255" height="266"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jbV-fV-YTb">
+                                <rect key="frame" x="0.0" y="20" width="375" height="603"/>
                             </imageView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ABy-FE-qPp">
                                 <rect key="frame" x="0.0" y="623" width="375" height="44"/>
@@ -35,42 +34,60 @@
                                             <action selector="pickAnImageFromCamera:" destination="BYZ-38-t0r" id="Nrx-wO-UJ9"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Save" id="2Ho-wl-2Uw">
+                                        <connections>
+                                            <action selector="saveMeme:" destination="BYZ-38-t0r" id="4w2-mJ-2ZK"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WD0-Ic-Wkh">
-                                <rect key="frame" x="87.5" y="336" width="200" height="30"/>
+                                <rect key="frame" x="87.5" y="548" width="200" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="tPc-Ci-CTx"/>
+                                    <constraint firstAttribute="width" constant="200" id="ui8-Lr-hg5"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7mv-u1-sYu">
-                                <rect key="frame" x="87.5" y="184" width="200" height="30"/>
+                                <rect key="frame" x="87.5" y="88" width="200" height="30"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="200" id="RQw-gG-5xh"/>
+                                    <constraint firstAttribute="width" constant="200" id="aC2-8r-uhA"/>
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YCa-Wv-HNc">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="SHARE" id="j43-dI-48A"/>
+                                    <barButtonItem systemItem="cancel" id="fJV-aY-kXz"/>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="7mv-u1-sYu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="164" id="1aL-M5-zJt"/>
-                            <constraint firstItem="ABy-FE-qPp" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="Dio-94-fUX"/>
-                            <constraint firstItem="WD0-Ic-Wkh" firstAttribute="top" secondItem="7mv-u1-sYu" secondAttribute="bottom" constant="122" id="ELv-4d-Cun"/>
-                            <constraint firstItem="ABy-FE-qPp" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="ThN-FR-7El"/>
-                            <constraint firstItem="WD0-Ic-Wkh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="gMF-ep-2Zr"/>
-                            <constraint firstItem="7mv-u1-sYu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="h3v-zv-bpl"/>
-                            <constraint firstItem="ABy-FE-qPp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="vfd-nf-Br3"/>
+                            <constraint firstItem="jbV-fV-YTb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="FZR-kN-7Oh"/>
+                            <constraint firstItem="ABy-FE-qPp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="JSy-Hg-g16"/>
+                            <constraint firstItem="ABy-FE-qPp" firstAttribute="top" secondItem="jbV-fV-YTb" secondAttribute="bottom" id="MMn-6x-GGn"/>
+                            <constraint firstItem="ABy-FE-qPp" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="NcT-44-rY2"/>
+                            <constraint firstItem="7mv-u1-sYu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="68" id="WkP-5A-LPc"/>
+                            <constraint firstItem="ABy-FE-qPp" firstAttribute="top" secondItem="WD0-Ic-Wkh" secondAttribute="bottom" constant="45" id="ZaX-TR-ICs"/>
+                            <constraint firstItem="jbV-fV-YTb" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="cB6-uf-KMf"/>
+                            <constraint firstItem="jbV-fV-YTb" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="njP-6s-euX"/>
+                            <constraint firstItem="7mv-u1-sYu" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pBp-PM-3Ib"/>
+                            <constraint firstItem="WD0-Ic-Wkh" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="pCY-u2-dHU"/>
+                            <constraint firstItem="ABy-FE-qPp" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="z27-1k-865"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="bottomTextField" destination="WD0-Ic-Wkh" id="06g-Wi-24Z"/>
                         <outlet property="imagePickerView" destination="jbV-fV-YTb" id="OKp-Ac-LuM"/>
+                        <outlet property="toolBar" destination="ABy-FE-qPp" id="aPc-bV-vHl"/>
                         <outlet property="topTextField" destination="7mv-u1-sYu" id="OkE-pQ-IxG"/>
                     </connections>
                 </viewController>
