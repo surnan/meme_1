@@ -7,17 +7,14 @@
 //
 
 import UIKit
-import AVFoundation
 
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
-    
     
     //MARK: Outlet Variables
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var topTextField: UITextField! {
         didSet{
-            //topTextField = setupTextField() // ERROR
             topTextField = setupTextField(textField: topTextField)
             topTextField.text = "TOP"
             topTextField.backgroundColor = UIColor.clear
@@ -35,7 +32,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     //MARK: Local Defined Variables
-    var memeImage = UIImage()  //image that will be sent from app
     var topToolbar: UIToolbar = {
         var toolbar = UIToolbar()
         toolbar.barTintColor = UIColor.lightGray
@@ -100,12 +96,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let barButtonOne = UIBarButtonItem(title: "PICK", style: .done, target: self, action: #selector(handleAlbumBarButton))
         let barButtonTwo = UIBarButtonItem(title: "CAMERA", style: .plain, target: self, action: #selector(handleCameraBarButton))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,target: nil,action: nil)
-        
-//        barButtonTwo.isEnabled = false
-        
-        
+        //Camera check for enabling BarButtonTwo
         barButtonTwo.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) ? true : false
-        
         bottomToolbar.setItems([flexibleSpace, barButtonOne, flexibleSpace ,barButtonTwo,flexibleSpace], animated: false)
     }
     
@@ -124,11 +116,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @objc private func handleShareBarButton() {
-        saveMeme()
-        let items = [memeImage]
-        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        present(ac, animated: true)
-        print("--Share Button pressed--")
+        let currentMeme = saveMeme()
+        let items = [currentMeme.finalImage]
+        let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        present(activityVC, animated: true)
     }
     
     
@@ -168,7 +159,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
-        //        view.frame.origin.y = getKeyboardHeight(notification)  // y=0 top of screen. We shift it upwards
         view.frame.origin.y = 0
     }
     
@@ -195,14 +185,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     //MARK:- Make Meme Functions
-    func saveMeme() {
-        showToolbars(makeVisible: false)
-        var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: backgroundImageView)
-        currentMeme.finalImage = generateMemedImage()
-        memeImage = currentMeme.finalImage
-        showToolbars(makeVisible: true)
-    }
-    
     func generateMemedImage() -> UIImage {
         // Render view to an image
         UIGraphicsBeginImageContext(self.view.frame.size)
@@ -211,6 +193,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         UIGraphicsEndImageContext()
         return memedImage
     }
+    
+    func saveMeme()-> Meme {
+        showToolbars(makeVisible: false)
+//        var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: backgroundImageView)
+//        currentMeme.finalImage = generateMemedImage()
+        var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: backgroundImageView, memeImage: generateMemedImage())
+//        memeImage = currentMeme.finalImage
+        showToolbars(makeVisible: true)
+        return currentMeme
+    }
+    
+
 
     //MARK:- Swift Overload Functions
     override var prefersStatusBarHidden: Bool {
@@ -232,18 +226,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         view.backgroundColor = UIColor.black
         setupUI_and_Contraints()
         [topTextField, bottomTextField].forEach{$0.addTarget(self, action: #selector(myTextFieldTextChanged), for: UIControl.Event.editingChanged)}
-        
-        let cameraQ = UIImagePickerController.isSourceTypeAvailable(.camera) ? "YES" : "NO"
-        print("cameraQ ============= \(cameraQ)")
-        
-        
-        
-        
-        
     }
-    
-    
-    
 }
 
 

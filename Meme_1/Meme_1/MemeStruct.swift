@@ -24,7 +24,18 @@ struct Meme {
         } else {
             self.originalImage = UIImage()
         }
-        
         self.finalImage = UIImage()
+    }
+    
+    init(topTxtField: UITextField, bottomTxtField: UITextField, originalImageView: UIImageView, memeImage: UIImage) {
+        self.top = topTxtField.text!
+        self.bottom = bottomTxtField.text!
+        self.finalImage = memeImage
+        
+        if let image = originalImageView.image {
+            self.originalImage = image
+        } else {
+            self.originalImage = UIImage()
+        }
     }
 }
