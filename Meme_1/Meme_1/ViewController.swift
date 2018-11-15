@@ -87,7 +87,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func setupTopToolBar(){
         let barButtonOne = UIBarButtonItem(title: "SHARE", style: .done, target: self, action: #selector(handleShareBarButton))
-        let barButtonTwo = UIBarButtonItem(title: "CANCEL", style: .plain, target: self, action: #selector(helloWorld))
+        let barButtonTwo = UIBarButtonItem(title: "CANCEL", style: .plain, target: self, action: #selector(handleCancelBarButton))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,target: nil,action: nil)
         topToolbar.setItems([barButtonOne, flexibleSpace ,barButtonTwo], animated: false)
     }
@@ -121,6 +121,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let activityVC = UIActivityViewController(activityItems: items, applicationActivities: nil)
         present(activityVC, animated: true)
     }
+
+    @objc private func handleCancelBarButton() {
+        topTextField.text = "TOP"
+        bottomTextField.text = "BOTTOM"
+        backgroundImageView.image = UIImage()
+    }
+    
+    
     
     
     //MARK:- ImagePickerController Functions
@@ -178,12 +186,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         return 0.0
     }
-    
-    
-    @objc private func helloWorld(){
-        print("hello world")
-    }
-    
+
     //MARK:- Make Meme Functions
     func generateMemedImage() -> UIImage {
         // Render view to an image
@@ -196,14 +199,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func saveMeme()-> Meme {
         showToolbars(makeVisible: false)
-//        var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: backgroundImageView)
-//        currentMeme.finalImage = generateMemedImage()
-        var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: backgroundImageView, memeImage: generateMemedImage())
-//        memeImage = currentMeme.finalImage
+        let currentMeme = Meme(topTxtField: topTextField,
+                               bottomTxtField: bottomTextField,
+                               originalImageView: backgroundImageView,
+                               memeImage: generateMemedImage())
         showToolbars(makeVisible: true)
         return currentMeme
     }
-    
 
 
     //MARK:- Swift Overload Functions
