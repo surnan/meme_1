@@ -7,109 +7,14 @@
 //
 
 import UIKit
+import AVFoundation
+
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
-    var finalImage = UIImage()
     
-    
+    //MARK: Outlet Variables
     @IBOutlet weak var backgroundImageView: UIImageView!
-    
-    func showToolbars(makeVisible: Bool){
-        if !makeVisible {
-            bottomToolbar.isHidden = true
-            topToolbar.isHidden = true
-        } else {
-            topToolbar.isHidden = false
-            bottomToolbar.isHidden = false
-        }
-    }
-    
-    //MARK:- Toolbars programiticallly
-    var topToolbar: UIToolbar = {
-       var toolbar = UIToolbar()
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        toolbar.barTintColor = UIColor.red
-        toolbar.isTranslucent = false
-        return toolbar
-    }()
-    
-    var bottomToolbar: UIToolbar = {
-        var toolbar = UIToolbar()
-        toolbar.translatesAutoresizingMaskIntoConstraints = false
-        toolbar.barTintColor = UIColor.red
-        toolbar.isTranslucent = false
-        return toolbar
-    }()
-    
-    func setupUI_and_Contraints(){
-        setupTopToolBar()
-        setupBottomToolBar()
-        [topToolbar, bottomToolbar].forEach{view.addSubview($0)}
-        NSLayoutConstraint.activate([
-        topToolbar.topAnchor.constraint(equalTo: view.topAnchor),
-        topToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        topToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        bottomToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -60),
-        bottomToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        bottomToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
-    }
-    
-    func setupTopToolBar(){
-        let barButtonOne = UIBarButtonItem(title: "SHARE", style: .done, target: self, action: #selector(handleShareBarButton))
-        let barButtonTwo = UIBarButtonItem(title: "CANCEL", style: .plain, target: self, action: #selector(helloWorld))
-        
-        let flexibleSpace = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil
-        )
-        
-        topToolbar.setItems([barButtonOne, flexibleSpace ,barButtonTwo], animated: false)
-    }
-
-    func setupBottomToolBar(){
-        let barButtonOne = UIBarButtonItem(title: "PICK", style: .done, target: self, action: #selector(handleAlbumBarButton))
-        let barButtonTwo = UIBarButtonItem(title: "CAMERA", style: .plain, target: self, action: #selector(handleCameraBarButton))
-        
-        let flexibleSpace = UIBarButtonItem(
-            barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,
-            target: nil,
-            action: nil
-        )
-        
-        bottomToolbar.setItems([flexibleSpace, barButtonOne, flexibleSpace ,barButtonTwo,flexibleSpace], animated: false)
-    }
-    
-    @objc func handleAlbumBarButton() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
-    @objc func handleCameraBarButton(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        present(imagePicker, animated: true, completion: nil)    }
-    
-    
-    @objc private func helloWorld(){
-        print("hello world")
-    }
-    
-    @objc private func handleShareBarButton() {
-        saveMeme()
-        let items = [finalImage]
-        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
-        present(ac, animated: true)
-        print("--Share Button pressed--")
-    }
-    
-    
-    //MARK:- UITextField Outlets & Code
     @IBOutlet weak var topTextField: UITextField! {
         didSet{
             //topTextField = setupTextField() // ERROR
@@ -129,6 +34,26 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     
+    //MARK: Local Defined Variables
+    var memeImage = UIImage()  //image that will be sent from app
+    var topToolbar: UIToolbar = {
+        var toolbar = UIToolbar()
+        toolbar.barTintColor = UIColor.lightGray
+        toolbar.isTranslucent = false
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        return toolbar
+    }()
+    
+    var bottomToolbar: UIToolbar = {
+        var toolbar = UIToolbar()
+        toolbar.barTintColor = UIColor.lightGray
+        toolbar.isTranslucent = false
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        return toolbar
+    }()
+    
+    
+    //MARK:- UITextField Functions
     @objc func myTextFieldTextChanged (textField: UITextField) {
         textField.text =  textField.text?.uppercased()
     }
@@ -149,46 +74,99 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         ]
         tempTextField.defaultTextAttributes = memeTextAttributes
         tempTextField.textAlignment = .center
+        tempTextField.delegate = self
         return tempTextField
     }
     
-    //MARK:- Default Swift Functions
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        subscribeToKeyboardNotification()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        unsubscribeToKeyboardNotification()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = UIColor.black
-
-        setupUI_and_Contraints()
-        
-        
-        [topTextField, bottomTextField].forEach{
-            $0.addTarget(self, action: #selector(myTextFieldTextChanged), for: UIControl.Event.editingChanged)
+    //MARK:- Toolbars/BarButton Functions
+    func showToolbars(makeVisible: Bool){
+        if !makeVisible {
+            bottomToolbar.isHidden = true
+            topToolbar.isHidden = true
+        } else {
+            topToolbar.isHidden = false
+            bottomToolbar.isHidden = false
         }
-        
-        [topTextField, bottomTextField].forEach{$0?.delegate = self}
     }
-
-    //MARK:- Keyboard
-
+    
+    func setupTopToolBar(){
+        let barButtonOne = UIBarButtonItem(title: "SHARE", style: .done, target: self, action: #selector(handleShareBarButton))
+        let barButtonTwo = UIBarButtonItem(title: "CANCEL", style: .plain, target: self, action: #selector(helloWorld))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,target: nil,action: nil)
+        topToolbar.setItems([barButtonOne, flexibleSpace ,barButtonTwo], animated: false)
+    }
+    
+    func setupBottomToolBar(){
+        let barButtonOne = UIBarButtonItem(title: "PICK", style: .done, target: self, action: #selector(handleAlbumBarButton))
+        let barButtonTwo = UIBarButtonItem(title: "CAMERA", style: .plain, target: self, action: #selector(handleCameraBarButton))
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,target: nil,action: nil)
+        
+//        barButtonTwo.isEnabled = false
+        
+        
+        barButtonTwo.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) ? true : false
+        
+        bottomToolbar.setItems([flexibleSpace, barButtonOne, flexibleSpace ,barButtonTwo,flexibleSpace], animated: false)
+    }
+    
+    @objc func handleAlbumBarButton() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @objc func handleCameraBarButton(_ sender: Any) {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .camera
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
+    @objc private func handleShareBarButton() {
+        saveMeme()
+        let items = [memeImage]
+        let ac = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        present(ac, animated: true)
+        print("--Share Button pressed--")
+    }
+    
+    
+    //MARK:- ImagePickerController Functions
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let tempImage = info[.originalImage] as? UIImage {
+            backgroundImageView.image = tempImage
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+    
+    func setupUI_and_Contraints(){
+        setupTopToolBar()
+        setupBottomToolBar()
+        [topToolbar, bottomToolbar].forEach{view.addSubview($0)}
+        NSLayoutConstraint.activate([
+            topToolbar.topAnchor.constraint(equalTo: view.topAnchor),
+            topToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            topToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            bottomToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ])
+    }
+    
+    //MARK:- Keyboard Functions
     @objc func keyboardWillShow(_ notification: Notification) {
         if bottomTextField.isEditing == true {
             view.frame.origin.y = -getKeyboardHeight(notification)  // y=0 top of screen. We shift it upwards
         }
     }
-   
+    
     @objc func keyboardWillHide(_ notification: Notification) {
         //        view.frame.origin.y = getKeyboardHeight(notification)  // y=0 top of screen. We shift it upwards
         view.frame.origin.y = 0
@@ -210,25 +188,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
         return 0.0
     }
-
     
-    //MARK:- ImagePickerController Functions
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
+    
+    @objc private func helloWorld(){
+        print("hello world")
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let tempImage = info[.originalImage] as? UIImage {
-            backgroundImageView.image = tempImage
-        }
-        dismiss(animated: true, completion: nil)
-    }
-    
+    //MARK:- Make Meme Functions
     func saveMeme() {
         showToolbars(makeVisible: false)
         var currentMeme = Meme(topTxtField: topTextField, bottomTxtField: bottomTextField, originalImageView: backgroundImageView)
         currentMeme.finalImage = generateMemedImage()
-        finalImage = currentMeme.finalImage
+        memeImage = currentMeme.finalImage
         showToolbars(makeVisible: true)
     }
     
@@ -240,6 +211,39 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         UIGraphicsEndImageContext()
         return memedImage
     }
+
+    //MARK:- Swift Overload Functions
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        subscribeToKeyboardNotification()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        unsubscribeToKeyboardNotification()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor.black
+        setupUI_and_Contraints()
+        [topTextField, bottomTextField].forEach{$0.addTarget(self, action: #selector(myTextFieldTextChanged), for: UIControl.Event.editingChanged)}
+        
+        let cameraQ = UIImagePickerController.isSourceTypeAvailable(.camera) ? "YES" : "NO"
+        print("cameraQ ============= \(cameraQ)")
+        
+        
+        
+        
+        
+    }
+    
+    
+    
 }
 
 
