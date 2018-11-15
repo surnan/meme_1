@@ -86,18 +86,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func setupTopToolBar(){
-        let barButtonOne = UIBarButtonItem(title: "SHARE", style: .done, target: self, action: #selector(handleShareBarButton))
+        let barButtonOne = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(handleShareBarButton))
         let barButtonTwo = UIBarButtonItem(title: "CANCEL", style: .plain, target: self, action: #selector(handleCancelBarButton))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,target: nil,action: nil)
         topToolbar.setItems([barButtonOne, flexibleSpace ,barButtonTwo], animated: false)
     }
     
     func setupBottomToolBar(){
-        let barButtonOne = UIBarButtonItem(title: "PICK", style: .done, target: self, action: #selector(handleAlbumBarButton))
-        let barButtonTwo = UIBarButtonItem(title: "CAMERA", style: .plain, target: self, action: #selector(handleCameraBarButton))
+        
+        let myImage = #imageLiteral(resourceName: "camera2")
+        let barButtonOne = UIBarButtonItem(image: myImage, style: .plain, target: self, action: #selector(handleCameraBarButton))
+        let barButtonTwo = UIBarButtonItem(title: "Album", style: .done, target: self, action: #selector(handleAlbumBarButton))
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace,target: nil,action: nil)
         //Camera check for enabling BarButtonTwo
-        barButtonTwo.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) ? true : false
+        barButtonOne.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera) ? true : false
         bottomToolbar.setItems([flexibleSpace, barButtonOne, flexibleSpace ,barButtonTwo,flexibleSpace], animated: false)
     }
     
@@ -150,10 +152,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         setupBottomToolBar()
         [topToolbar, bottomToolbar].forEach{view.addSubview($0)}
         NSLayoutConstraint.activate([
-            topToolbar.topAnchor.constraint(equalTo: view.topAnchor),
+            topToolbar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             topToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             topToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomToolbar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomToolbar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             bottomToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             bottomToolbar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
