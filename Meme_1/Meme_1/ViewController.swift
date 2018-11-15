@@ -93,7 +93,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func setupBottomToolBar(){
-        
         let myImage = #imageLiteral(resourceName: "camera2")
         let barButtonOne = UIBarButtonItem(image: myImage, style: .plain, target: self, action: #selector(handleCameraBarButton))
         let barButtonTwo = UIBarButtonItem(title: "Album", style: .done, target: self, action: #selector(handleAlbumBarButton))
@@ -107,6 +106,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
+        imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
     }
     
@@ -114,6 +114,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .camera
+        imagePicker.allowsEditing = true
         present(imagePicker, animated: true, completion: nil)
     }
     
@@ -131,21 +132,19 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     
-    
-    
     //MARK:- ImagePickerController Functions
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let tempImage = info[.originalImage] as? UIImage {
-            backgroundImageView.image = tempImage
+        if let editedImage = info[.editedImage] as? UIImage {
+            backgroundImageView.image = editedImage  //if the image is cropped or moved by user
+        } else if let originalImage = info[.originalImage] as? UIImage {
+            backgroundImageView.image = originalImage //if user does nothing after selecting photo
         }
         dismiss(animated: true, completion: nil)
     }
-    
-    
     
     func setupUI_and_Contraints(){
         setupTopToolBar()
