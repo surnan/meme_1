@@ -11,9 +11,6 @@ import UIKit
 
 class MemeController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
-    //MARK: Outlet Variables
-//    @IBOutlet weak var backgroundImageView: UIImageView!
-    
     var backgroundImageView: UIImageView = {
        var imageView = UIImageView()
         imageView.backgroundColor = UIColor.black
@@ -22,7 +19,6 @@ class MemeController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return imageView
     }()
     
-
     var topTextField: UITextField = {
        var textField = UITextField()
 
@@ -122,10 +118,7 @@ class MemeController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func setupUI_and_Contraints(){
         setupTopToolBar()
         setupBottomToolBar()
-        
-//        [topToolbar, bottomToolbar].forEach{view.addSubview($0)}
-        
-        
+
         [topToolbar, bottomToolbar].forEach{backgroundImageView.addSubview($0)}
         
         NSLayoutConstraint.activate([
@@ -179,7 +172,9 @@ class MemeController: UIViewController, UIImagePickerControllerDelegate, UINavig
         view.backgroundColor = UIColor.black
         setupTextFieldAndBackgroundImage()
         setupUI_and_Contraints()
-        [topTextField, bottomTextField].forEach{$0.addTarget(self, action: #selector(myTextFieldTextChanged), for: UIControl.Event.editingChanged)}
-        
+        [topTextField, bottomTextField].forEach{
+            $0.addTarget(self, action: #selector(myTextFieldTextChanged), for: UIControl.Event.editingChanged)
+            $0.delegate = self
+        }
     }
 }
