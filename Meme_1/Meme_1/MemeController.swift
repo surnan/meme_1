@@ -71,10 +71,7 @@ class MemeController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }()
     
     func setupTextFieldAndBackgroundImage(){
-//        [topTextField, bottomTextField, backgroundImageView].forEach{view.addSubview($0)}
-
         [backgroundImageView].forEach{view.addSubview($0)}
-        
         [topTextField, bottomTextField].forEach{backgroundImageView.addSubview($0)}
         
         NSLayoutConstraint.activate([
@@ -85,7 +82,7 @@ class MemeController: UIViewController, UIImagePickerControllerDelegate, UINavig
             backgroundImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             backgroundImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             backgroundImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -45),
+            backgroundImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
             ]
         )
     }
