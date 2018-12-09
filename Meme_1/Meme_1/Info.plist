@@ -20,10 +20,14 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>"This app needs access to your Camera"</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>"We need to import Photos"</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>"This app needs access to your Photo Library"</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
-	<key>UIMainStoryboardFile</key>
-	<string>Main</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -34,12 +38,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>&quot;This app needs access to your Photo Library&quot;</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>&quot;We need to import Photos&quot;</string>
-	<key>NSCameraUsageDescription</key>
-	<string>&quot;This app needs access to your Camera&quot;</string>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

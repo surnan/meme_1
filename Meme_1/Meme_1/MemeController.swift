@@ -12,23 +12,82 @@ import UIKit
 class MemeController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     //MARK: Outlet Variables
-    @IBOutlet weak var backgroundImageView: UIImageView!
-    @IBOutlet weak var topTextField: UITextField! {
-        didSet{
-            topTextField = setupTextField(textField: topTextField)
-            topTextField.text = "TOP"
-            topTextField.backgroundColor = UIColor.clear
-            topTextField.borderStyle = .none
-        }
-    }
+//    @IBOutlet weak var backgroundImageView: UIImageView!
     
-    @IBOutlet weak var bottomTextField: UITextField!{
-        didSet{
-            bottomTextField = setupTextField(textField: bottomTextField)
-            bottomTextField.text = "BOTTOM"
-            bottomTextField.backgroundColor = UIColor.clear
-            bottomTextField.borderStyle = .none
-        }
+    var backgroundImageView: UIImageView = {
+       var imageView = UIImageView()
+        imageView.backgroundColor = UIColor.black
+        imageView.isUserInteractionEnabled = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    
+
+    var topTextField: UITextField = {
+       var textField = UITextField()
+
+        textField.backgroundColor = UIColor.clear
+        textField.borderStyle = .none
+        textField.clearsOnBeginEditing = true
+        
+        let memeTextAttributes:[NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.strokeColor: UIColor.black,
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSAttributedString.Key.strokeWidth: -4.6
+        ]
+        
+        textField.defaultTextAttributes = memeTextAttributes
+        
+        let memeText = NSMutableAttributedString(string: "TOP", attributes: memeTextAttributes)
+        textField.attributedText = memeText
+        textField.textAlignment = .center
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
+    
+    var bottomTextField: UITextField = {
+        var textField = UITextField()
+        
+        textField.backgroundColor = UIColor.clear
+        textField.borderStyle = .none
+        textField.clearsOnBeginEditing = true
+        
+        let memeTextAttributes:[NSAttributedString.Key: Any] = [
+            NSAttributedString.Key.strokeColor: UIColor.black,
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSAttributedString.Key.strokeWidth: -4.6
+        ]
+        
+        textField.defaultTextAttributes = memeTextAttributes
+        
+        let memeText = NSMutableAttributedString(string: "BOTTOM", attributes: memeTextAttributes)
+        textField.attributedText = memeText
+        textField.textAlignment = .center
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
+    func setupTextFieldAndBackgroundImage(){
+//        [topTextField, bottomTextField, backgroundImageView].forEach{view.addSubview($0)}
+
+        [backgroundImageView].forEach{view.addSubview($0)}
+        
+        [topTextField, bottomTextField].forEach{backgroundImageView.addSubview($0)}
+        
+        NSLayoutConstraint.activate([
+            topTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            topTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 90),
+            bottomTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            bottomTextField.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -90),
+            backgroundImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            backgroundImageView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            backgroundImageView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            backgroundImageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -45),
+            ]
+        )
     }
     
     //MARK: Local Defined Variables
@@ -66,7 +125,12 @@ class MemeController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func setupUI_and_Contraints(){
         setupTopToolBar()
         setupBottomToolBar()
-        [topToolbar, bottomToolbar].forEach{view.addSubview($0)}
+        
+//        [topToolbar, bottomToolbar].forEach{view.addSubview($0)}
+        
+        
+        [topToolbar, bottomToolbar].forEach{backgroundImageView.addSubview($0)}
+        
         NSLayoutConstraint.activate([
             topToolbar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             topToolbar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -116,9 +180,9 @@ class MemeController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black
+        setupTextFieldAndBackgroundImage()
         setupUI_and_Contraints()
         [topTextField, bottomTextField].forEach{$0.addTarget(self, action: #selector(myTextFieldTextChanged), for: UIControl.Event.editingChanged)}
+        
     }
 }
-
-
